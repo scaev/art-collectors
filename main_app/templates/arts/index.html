@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Art List</h1>
+
+{% for art in arts %}
+<div class="card">
+  <div class="card-content">
+    <span class="card-title">{{ art.name }}</span>
+    <p>Painting by: {{ art.paintingby }}</p>
+    <p>Description: {{ art.description }}</p>
+    <p>Medium: {{ art.medium }}</p>
+  </div>
+</div>
+{% endfor %} {% endblock %}
