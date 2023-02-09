@@ -1,8 +1,9 @@
 from django.shortcuts import render
+from.models import Art
 
 arts = [
-  {'name': 'Mona Lisa', 'paintingby': 'Leonardo da Vinci', 'description': 'The most parodied work of art in the world', 'medium': 'Oil paint'},
-  {'name': 'The Starry Night', 'paintingby': 'Vincent van Gogh', 'description': 'The Starry Night is an oil-on-canvas painting by the Dutch Post-Impressionist painter Vincent van Gogh.', 'medium': 'Oil paint'},
+  {'name': 'Mona Lisa', 'painting_by': 'Leonardo da Vinci', 'description': 'The most parodied work of art in the world', 'medium': 'Oil paint'},
+  {'name': 'The Starry Night', 'painting_by': 'Vincent van Gogh', 'description': 'The Starry Night is an oil-on-canvas painting by the Dutch Post-Impressionist painter Vincent van Gogh.', 'medium': 'Oil paint'},
 ]
 
 # Create your views here.
@@ -13,4 +14,9 @@ def about(request):
   return render(request, 'about.html')
 
 def arts_index(request):
+  arts = Art.objects.all()
   return render(request, 'arts/index.html', {'arts': arts})
+
+def arts_detail(request, art_id):
+  art = Art.objects.get(id=art_id)
+  return render(request, 'arts/detail.html', { 'art': art })

@@ -4,11 +4,13 @@
 
 {% for art in arts %}
 <div class="card">
-  <div class="card-content">
-    <span class="card-title">{{ art.name }}</span>
-    <p>Painting by: {{ art.paintingby }}</p>
-    <p>Description: {{ art.description }}</p>
-    <p>Medium: {{ art.medium }}</p>
-  </div>
+  <a href="{% url 'detail' art.id %}">
+    <div class="card-content">
+      <span class="card-title">{{ art.name }}</span>
+      <p>Painting by: {{ art.painting_by }}</p>
+      <p>Description: {{ art.description }}</p>
+      <p>Medium: {{ art.medium }}</p>
+    </div>
+  </a>
 </div>
 {% endfor %} {% endblock %}
