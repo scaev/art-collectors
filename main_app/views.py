@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from.models import Art
 
 arts = [
@@ -26,3 +26,12 @@ def arts_detail(request, art_id):
 class ArtCreate(CreateView):
   model = Art
   fields = '__all__'
+
+
+class ArtUpdate(UpdateView):
+  model = Art
+  fields = ['painting_by', 'description', 'medium']
+
+class ArtDelete(DeleteView):
+  model = Art
+  success_url = '/arts'

@@ -9,6 +9,10 @@
     <p>Description: {{ art.description }}</p>
     <p>Medium: {{ art.medium }}</p>
   </div>
+  <div class="card-action">
+    <a href="{% url 'arts_update' art.id %}">Edit</a>
+    <a href="{% url 'arts_delete' art.id %}">Delete</a>
+  </div>
 </div>
 
 {% endblock %}
