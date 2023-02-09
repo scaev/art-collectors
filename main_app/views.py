@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from.models import Art
+from .forms import MaintainingForm
 
 arts = [
   {'name': 'Mona Lisa', 'painting_by': 'Leonardo da Vinci', 'description': 'The most parodied work of art in the world', 'medium': 'Oil paint'},
@@ -20,7 +21,8 @@ def arts_index(request):
 
 def arts_detail(request, art_id):
   art = Art.objects.get(id=art_id)
-  return render(request, 'arts/detail.html', { 'art': art })
+  maintaining_form = MaintainingForm()
+  return render(request, 'arts/detail.html', { 'art': art, 'maintaining_form':maintaining_form })
 
 
 class ArtCreate(CreateView):
@@ -35,3 +37,15 @@ class ArtUpdate(UpdateView):
 class ArtDelete(DeleteView):
   model = Art
   success_url = '/arts'
+
+def add_maintaining(request, art_id):
+  form = MaintainingForm(request.POST)
+  if form.is_valid():
+    # false cunku henuz yiklenmesini istemiyoruz
+    new_maintaining = form.save(commit=False)
+
+    # asagida manupilating the data in model
+    new_maintaining.art_id = art_id
+    # ondan sonra kaydediyoruz
+    new_maintaining.save()
+  return redirect('detail', art_id=art_id)
