@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Frame List</h1>
+
+{% for frame in frame_list %}
+<a href="{% url 'frames_detail' frame.id %}">
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ frame.name }}</span>
+      <p>Color: {{ frame.color }}</p>
+    </div>
+  </div>
+</a>
+{% endfor %} {% endblock %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from.models import Art
+from django.views.generic import ListView, DetailView
+from.models import Art, Frame
 from .forms import MaintainingForm
 
 arts = [
@@ -21,8 +22,10 @@ def arts_index(request):
 
 def arts_detail(request, art_id):
   art = Art.objects.get(id=art_id)
+  id_list = art.frames.all().values_list('id')
+  frames_art_doesnt_have = Frame.objects.exclude(id__in=id_list)
   maintaining_form = MaintainingForm()
-  return render(request, 'arts/detail.html', { 'art': art, 'maintaining_form':maintaining_form })
+  return render(request, 'arts/detail.html', { 'art': art, 'maintaining_form':maintaining_form, 'frames': frames_art_doesnt_have })
 
 
 class ArtCreate(CreateView):
@@ -48,4 +51,32 @@ def add_maintaining(request, art_id):
     new_maintaining.art_id = art_id
     # ondan sonra kaydediyoruz
     new_maintaining.save()
+  return redirect('detail', art_id=art_id)
+
+class FrameList(ListView):
+  model = Frame
+
+class FrameDetail(DetailView):
+  model = Frame
+
+class FrameCreate(CreateView):
+  model = Frame
+  fields = '__all__'
+
+class FrameUpdate(UpdateView):
+  model = Frame
+  fields = ['name', 'color']
+
+class FrameDelete(DeleteView):
+  model = Frame
+  success_url = '/frames'
+
+
+def assoc_frame(request, art_id, frame_id):
+  # Note that you can pass a frame's id instead of the whole frame object
+  Art.objects.get(id=art_id).frames.add(frame_id)
+  return redirect('detail', art_id=art_id)
+
+def unassoc_frame(request, art_id, frame_id):
+  Art.objects.get(id=art_id).frames.remove(frame_id)
   return redirect('detail', art_id=art_id)

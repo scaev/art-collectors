@@ -9,11 +9,22 @@ METHODS = (
     ('M', 'Maintenance')
 )
 
+class Frame(models.Model):
+  name = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('frames_detail', kwargs={'pk': self.id})
+
 class Art(models.Model):
     name = models.CharField(max_length=100)
     painting_by = models.CharField(max_length=100)
     description = models.TextField(max_length=250)
     medium = models.CharField(max_length=100)
+    frames = models.ManyToManyField(Frame)
 
     def fed_for_today(self):
         return self.maintaining_set.filter(date=date.today()).count() >= len(METHODS)
